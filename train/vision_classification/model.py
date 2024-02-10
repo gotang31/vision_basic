@@ -9,7 +9,7 @@ class MyResNet(torchvision.models.ResNet):
     def forward(self, img):
       '''
       img : img tensor, (N, C, H, W)
-      box : box coordinate, (x1, y1, x2, y2)
+      box : box coordinate, (x1, y1, x2, y2) ; if you use roi-pooling
       '''
       x = self.conv1(img)
       x = self.bn1(x)

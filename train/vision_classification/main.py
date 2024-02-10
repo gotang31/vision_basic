@@ -4,11 +4,12 @@ import argparse
 import json
 import pandas as pd
 import torch
+import torch.nn as nn
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning import loggers
 from model import SimRes50
-from train import ResBck
+from train import ResBck, DEVICE
 from dataset import ResData, collate_fn
 
 class TrainingApp:
@@ -47,7 +48,7 @@ class TrainingApp:
             default = False,
             type = bool,)
         
-        parser.add_argument('--freeze_depth',
+        parser.add_argument('--freeze-depth',
             help="To the extent which you want freeze from last to ascending layer",
             default = 1,
             type = int,)
@@ -80,8 +81,11 @@ class TrainingApp:
             json.dump(vars(self.args), fp)
     
     def init_model(self):
-        model = ResBck(SimRes50, self.args.num_classes, lr = self.args.learning_rate, mode = self.args.mode, freeze_depth = self.args.freeze_depth)
+        criterion = nn.CrossEntropyLoss()
 
+        model = ResBck(SimRes50, self.args.num_classes, criterion = criterion,lr = self.args.learning_rate, mode = self.args.mode, freeze_depth = self.args.freeze_depth)
+        model.to(DEVICE)
+        
         return model
 
     def train_loader(self):
@@ -100,7 +104,7 @@ class TrainingApp:
         val_inds = list(range(len(val_df)))
         val_dl = torch.utils.data.DataLoader(ResData(val_df, val_inds, 'val'),
                                         batch_size = self.args.batch_size,
-                                        shuffle = True,
+                                        shuffle = False,
                                         collate_fn=collate_fn,
                                         pin_memory= True if torch.cuda.is_available() else False,
                                         num_workers = self.args.num_workers)
@@ -109,7 +113,7 @@ class TrainingApp:
     def main(self):
         checkpoint_callback = ModelCheckpoint(dirpath = self.args.dir, filename = 'resnet50-{epoch:02d}-{val_loss:.2f}', save_top_k = 3, save_last = True, monitor = 'val_loss')
         tb_logger = loggers.TensorBoardLogger(save_dir = self.args.dir)
-        trainer = pl.Trainer(max_epochs = self.args.epochs, gradient_clip_val=0.1, logger = tb_logger, callbacks = checkpoint_callback)
+        trainer = pl.Trainer(max_epochs = self.args.epochs, gradient_clip_val=0.1, logger = tb_logger, callbacks = checkpoint_callback, accelerator='gpu')
 
         trainer.fit(self.model, train_dataloaders = self.train_loader(), val_dataloaders = self.val_loader())
 
