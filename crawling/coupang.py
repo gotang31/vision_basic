@@ -31,6 +31,8 @@ def img_download(links, headers, fdir): # links = product links by 'prod_link' f
         # 디렉토리가 존재하지 않으면 새로 생성
         os.makedirs(fdir)
         
+    cnt = 1    
+    total_cnt = len(links)
     for link in links:
         link = 'https://www.coupang.com' + link
         img_link = img_url(link, headers = headers)
@@ -39,7 +41,8 @@ def img_download(links, headers, fdir): # links = product links by 'prod_link' f
             title = clean_filename(title)
             file_path = os.path.join(fdir, title)
             urlretrieve("https:" + link_, file_path)
-        print('check link:', link)
+        print(f'{cnt}/{total_cnt} | check link:', link)
+        cnt += 1
 
 if __name__ == "__main__":
 
