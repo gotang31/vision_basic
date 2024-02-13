@@ -9,6 +9,10 @@
 ```
 - crawling  
      |- laptop (you have to run coupang.py if you run compare.py)
+          |- ...jpg
+          |- ...jpg
+          |- ...jpg
+          ...
 
 - inference  
      |- laptop.csv
