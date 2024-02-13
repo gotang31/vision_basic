@@ -7,7 +7,7 @@
   # file directory
 
   ../crawling
-        |
-        |______ laptop (you have to run coupang.py if you run compare.py)
+        |  
+        |____ laptop (you have to run coupang.py if you run compare.py)
 
-  ./
+  
