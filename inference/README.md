@@ -6,12 +6,11 @@
 
 # file directory
 
+```
 - crawling  
-     |  
-     |____ laptop (you have to run coupang.py if you run compare.py)
+     |- laptop (you have to run coupang.py if you run compare.py)
 
 - inference  
-     |  
-     |____ laptop.csv
-
+     |- laptop.csv
+```
   
