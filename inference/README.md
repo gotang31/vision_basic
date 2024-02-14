@@ -17,4 +17,7 @@
 - inference  
      |- laptop.csv
 ```
-  
+# Results
+![다운로드 (1)](https://github.com/gotang31/vision_basic/assets/147139248/502d18a2-2b0b-4542-894b-f10464b4a58a)
+![다운로드 (2)](https://github.com/gotang31/vision_basic/assets/147139248/9b900520-a0c0-40bf-89be-3ebeb5d74f97)
+
