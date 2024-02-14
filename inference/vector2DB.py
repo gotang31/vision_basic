@@ -1,3 +1,4 @@
+import os
 import torchvision
 import torch
 import pandas as pd
@@ -5,7 +6,7 @@ from transformers import DetrForObjectDetection, DetrImageProcessor
 import faiss
 from feature_extraction import res_fe, detr_fe
 
-class SimBck: # Similairty Backbone = Resnet50
+class SimBck: 
     def __init__(self,
                 model,
                 process,
@@ -30,7 +31,7 @@ class SimBck: # Similairty Backbone = Resnet50
             device = "cpu"
         return device
 
-    def initiate_model(self): # model initiate 후 eval 모드로 바꿈
+    def initiate_model(self): 
         self.model.to(self.device)
 
         return self.model.eval()
@@ -49,8 +50,11 @@ class VecDB(SimBck):
         self.file_name = file_name
         self.initiate_model()
 
+        if not os.path.exists(self.dir):
+            os.makedirs(self.dir)
+        
     def vector2_faiss_L2(self, df):
-        print(f'{self.file_name} : started the feature extraction and build vectorDB')
+        print(f'{self.file_name} : start the feature extraction and build vectorDB')
         index = faiss.IndexFlatL2(2048)
         index = faiss.IndexIDMap2(index)
 
@@ -60,7 +64,7 @@ class VecDB(SimBck):
             img_dir = '../crawling/laptop/' + img_dir
             
             if i % 500 == 0:
-                faiss.write_index(index, f'laptop_{self.file_name}.index')
+                faiss.write_index(index, f'{self.dir}/laptop_{self.file_name}.index')
             
             i += 1
 
@@ -74,7 +78,7 @@ class VecDB(SimBck):
                 print(itemid, '실패')
                 continue
           
-        faiss.write_index(index, f'laptop_{self.file_name}.index')
+        faiss.write_index(index, f'{self.dir}/laptop_{self.file_name}.index')
         print(f'contruction of {self.file_name} vectorDB is completed')
 
 if __name__== "__main__":

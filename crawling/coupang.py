@@ -28,7 +28,7 @@ def img_url(url, headers):
 
 def img_download(links, headers, fdir): # links = product links by 'prod_link' function
     if not os.path.exists(fdir):
-        # 디렉토리가 존재하지 않으면 새로 생성
+        # newly make a folder directory of files
         os.makedirs(fdir)
         
     cnt = 1    

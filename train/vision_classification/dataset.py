@@ -15,19 +15,19 @@ class ResData(torch.utils.data.Dataset):
         return len(self.indices)
 
     def __getitem__(self, idx):
-        # index 접근 후 image name
+        # image name
         info = self.df[self.df.index == idx]
 
-        # 해당 이미지의 path, boxes 정보 가져오기
+        # path, boxes 
         img = info.ImageID.iloc[0]
         boxes = info.iloc[:,-4:]
 
-        # 이미지, 라벨 정보
+        # images, labels
         img = self.load_img(img, self.phase)
         label = info.values[:, -5].astype('int64')
         label = torch.tensor(label, dtype = torch.int64)
 
-        # 이미지 crop/resize
+        # crop/resize of images
         cropped_img = self.crop_image(img, boxes)
         preprocess = self.assign_transform()
         img = preprocess(cropped_img)
