@@ -16,6 +16,9 @@
 
 - inference  
      |- laptop.csv
+     |- vectorDB
+          |- laptop_detr.index
+          |- laptop_resnet50.index
 ```
 # Results
 ![다운로드 (1)](https://github.com/gotang31/vision_basic/assets/147139248/502d18a2-2b0b-4542-894b-f10464b4a58a)
