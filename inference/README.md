@@ -8,7 +8,7 @@
 
 ```
 - crawling  
-     |- laptop (you have to run coupang.py if you run compare.py)
+     |- laptop (you have to run coupang.py if you run comparison.py)
           |- ...jpg
           |- ...jpg
           |- ...jpg
